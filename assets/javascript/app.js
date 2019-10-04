@@ -1,15 +1,34 @@
 //Intitial values
-var counter = 30;
+var counter = 5;
 var currentQuestion = 0;
 var score = 0; 
 var lost = 0;
 var timer; 
+
+//If timer over, go to next question
+
+function nextQuestion() {
+
+    var questionsOver = (quizQuestions.length - 1) === currentQuestion;
+
+    if (questionsOver){
+        console.log('Game Over')
+    }else{
+        currentQuestion++;
+        loadQuestion(); 
+    }
+    
+}
 
 
 // Start the 30 second Timer
 
 function timeUp(){
     clearInterval(timer);
+
+    lost++;
+
+    nextQuestion();
 }
 
 
@@ -29,7 +48,7 @@ function countDown(){
 // Display the question and choices together
 
 function loadQuestion(){
-    counter = 30;
+    counter = 5;
     timer = setInterval(countDown, 1000);
 
     var question = quizQuestions[currentQuestion].question;
@@ -53,5 +72,13 @@ function loadChoices(choices){
     return result;
 
 };
+
+$(document).on('click', '.choice', function(){
+    var clickedAnswer = $(this).attr('data-answer');
+    console.log('clicked', clickedAnswer);
+});
+
+
+
 
 loadQuestion();
