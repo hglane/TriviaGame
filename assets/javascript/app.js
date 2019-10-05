@@ -13,6 +13,7 @@ function nextQuestion() {
 
     if (questionsOver){
         console.log('Game Over')
+        displayResult();
     }else{
         currentQuestion++;
         loadQuestion(); 
@@ -55,10 +56,12 @@ function loadQuestion(){
     var choices = quizQuestions[currentQuestion].choices;
 
     $('#time').html('Time Remaining: ' + counter);
-    $('#game').html('<h4>' + question + '</h4>');
-    $('#game').append(loadChoices(choices))
-
-
+    $('#game').html(`
+        <h4>${question}<h4>
+        ${loadChoices(choices)}
+        ${loadRemainingQuestion()}
+    `);
+    
 }
 
 function loadChoices(choices){
@@ -66,7 +69,7 @@ function loadChoices(choices){
 
     for (var i = 0; i < choices.length; i++){
 
-        result += '<p class="choice" data-answer="choices[i]">' + choices[i] + '</p>';
+        result += '<p class="choice" data-answer="'+ choices[i] +'">' + choices[i] + '</p>';
     };
 
     return result;
@@ -74,11 +77,52 @@ function loadChoices(choices){
 };
 
 $(document).on('click', '.choice', function(){
+    clearInterval(timer);
     var clickedAnswer = $(this).attr('data-answer');
-    console.log('clicked', clickedAnswer);
+    var correctAnswer = quizQuestions[currentQuestion].correctAnswer;
+
+    if (correctAnswer === clickedAnswer){
+        //Win
+        score++;
+        console.log('Win')
+        nextQuestion();
+    }else {
+        lost++;
+        console.log('Lose')
+        nextQuestion();
+    }
 });
 
+function displayResult() {
+    var result = `
+        <p> You got ${score} question(s) right!</p>
+        <p> You missed ${score} question(s)</p>
+        <p> Total Questions: ${quizQuestions.length}</p>
+        <button class="btn btn-primary" id="reset">Reset Questions</button>
+    `;
 
+    $('#game').html(result);
+
+}
+
+$(document).on('click', '#reset', function() {
+    counter = 5;
+    currentQuestion = 0;
+    score = 0; 
+    lost = 0;
+    timer = null; 
+
+
+    loadQuestion();
+});
+
+function loadRemainingQuestion() {
+    var remainingQuestions = quizQuestions.length - (currentQuestion + 1);
+    var totalQuestions = quizQuestions.length;
+
+    return `Remaining Question(s): ${remainingQuestions}/${totalQuestions}`;
+
+}
 
 
 loadQuestion();
