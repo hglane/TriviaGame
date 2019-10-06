@@ -1,5 +1,5 @@
 //Intitial values
-var counter = 5;
+var counter = 30;
 var currentQuestion = 0;
 var score = 0; 
 var lost = 0;
@@ -49,7 +49,7 @@ function countDown(){
 // Display the question and choices together
 
 function loadQuestion(){
-    counter = 5;
+    counter = 30;
     timer = setInterval(countDown, 1000);
 
     var question = quizQuestions[currentQuestion].question;
