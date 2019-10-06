@@ -7,7 +7,7 @@ var quizQuestions = [
 
     {
         question: "Where do I work?",
-        choices: ["Strip Club", "Commerce Bank", "Missy B's", "Reggie's House :("],
+        choices: ["New York", "Commerce Bank", "Missy B's", "Reggie's House :("],
         correctAnswer: "Commerce Bank"
     },
 
